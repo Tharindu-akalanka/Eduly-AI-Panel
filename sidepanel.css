@@ -1,0 +1,345 @@
+:root {
+  --primary-color: #E91E63;
+  --primary-gradient: linear-gradient(135deg, #E91E63 0%, #FF4081 100%);
+  --primary-glow: rgba(233, 30, 99, 0.4);
+  --bg-color: #0F0F12;
+  /* Deep Black/Blue */
+  --surface-color: #1A1A20;
+  /* Slightly Lighter */
+  --surface-hover: #25252E;
+  --card-bg: #15151A;
+  --text-main: #FFFFFF;
+  --text-muted: #A0A0B0;
+  --border-color: #2A2A35;
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-container {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0 0 1rem 0;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.action-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  /* Remove padding here, move to content or handle nicely */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.action-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 20px;
+}
+
+/* Primary Action Button Style */
+.primary-action {
+  background: var(--primary-gradient);
+  border: none;
+  box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+.primary-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.primary-action .icon {
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  color: white;
+}
+
+.primary-action .action-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.primary-action .action-title {
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.primary-action .action-desc {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+/* Main Header */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+/* Welcome View Styles */
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  padding: 0 10px;
+}
+
+.welcome-logo {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 15px rgba(233, 30, 99, 0.3));
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #C0C0D0;
+  margin-bottom: 30px;
+}
+
+.instructions {
+  width: 100%;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.step {
+  background: var(--surface-color);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-main);
+}
+
+.step-num {
+  background: var(--primary-gradient);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.pulse-anim {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(233, 30, 99, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(233, 30, 99, 0);
+  }
+}
+
+/* Loader */
+#loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(233, 30, 99, 0.3);
+  border-top-color: #FF4081;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Output Area */
+.output-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.output-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.output-container::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+.empty-state {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border-color);
+  color: var(--text-muted);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* Result Card - The Premium Content Container */
+.result-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.result-card h1 {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.result-card h2 {
+  font-size: 1.2rem;
+  color: #FF4081;
+  /* Pink Headers */
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.result-card h3 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-top: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.result-card p {
+  color: #C0C0D0;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.result-card ul {
+  padding-left: 20px;
+  margin: 1rem 0;
+}
+
+.result-card li {
+  margin-bottom: 8px;
+  color: #D0D0E0;
+  position: relative;
+}
+
+.result-card li::marker {
+  color: #FF4081;
+  /* Pink bullets */
+}
+
+.result-card strong,
+.result-card b {
+  color: #fff;
+  font-weight: 600;
+}

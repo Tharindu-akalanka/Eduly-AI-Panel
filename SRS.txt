@@ -1,0 +1,74 @@
+To make it easy for you to save this for your records or to upload it directly into your project folder in Antigravity IDE, I have formatted the SRS as a clean, structured document. You can copy the content below and save it as a file named Eduly_Panel_SRS.txt.
+
+SOFTWARE REQUIREMENTS SPECIFICATION (SRS)
+Project Name: Eduly Panel
+Date: December 2025
+
+Version: 1.0
+
+Status: Finalized for Development
+
+1. PROJECT OVERVIEW
+Eduly Panel is a professional Chrome/Edge browser extension that utilizes the Gemini 3 (1.5 Flash/2.0) multimodal model. It provides a vertical side panel to help students simplify and explain complex lecture notes, slides, and academic documents in real-time.
+
+2. CORE OBJECTIVES
+Simplify: Convert jargon-heavy text into "Easy English."
+
+Visual Learning: Use screenshot-based analysis to explain diagrams and images.
+
+Accessibility: Ensure the tool is readable, modern, and does not distract from the primary reading material.
+
+3. FUNCTIONAL REQUIREMENTS (FR)
+FR-1: API Key Configuration
+
+The system must allow the user to input their own Gemini API Key.
+
+The key must be stored locally using chrome.storage.local.
+
+FR-2: Selection-Based Simplification
+
+The system must capture text currently highlighted by the user's cursor on any webpage.
+
+Upon clicking "Simplify Highlight," the text is sent to the AI.
+
+FR-3: Visual Screen Capture
+
+The system must provide a tool to screenshot the visible browser area.
+
+This image must be sent to Gemini for OCR (Optical Character Recognition) and simplification.
+
+FR-4: Pedagogical Prompting
+
+Every API call must be wrapped in a specific "Expert Teacher" prompt to ensure consistency and educational quality.
+
+4. TECHNICAL SPECIFICATIONS
+4.1. The AI Master Prompt
+
+"You are an expert teacher and academic tutor. Simplify this content for a student who did not attend the lecture. Rules: Use simple English, explain step-by-step, use real-life examples, avoid jargon. Output: 1. Topic Name, 2. Simple Explanation, 3. Key Points, 4. Example, 5. Quick Summary."
+
+4.2. Tech Stack
+
+Architecture: Chrome Extension Manifest V3.
+
+Languages: HTML5, CSS3, JavaScript (ES6+).
+
+APIs: Google Generative AI REST API, Chrome SidePanel API, Chrome Tabs/Scripting API.
+
+5. USER INTERFACE (UI) REQUIREMENTS
+Placement: Right-hand vertical side panel (width: 300px-400px).
+
+Theme: Modern/Professional (Inter/Segoe UI fonts, White/Slate/Blue color scheme).
+
+Output: Results must be displayed in a "Card" format for better focus.
+
+6. SECURITY & PRIVACY
+Zero Server Storage: No data should be sent to any server other than the Google Gemini endpoint.
+
+Key Safety: The API key must never be visible to anyone other than the user through the settings input.
+
+7. ERROR HANDLING
+If no text is selected, the system must show: "Please highlight text first!"
+
+If the API key is missing, the system must show: "Enter your API Key in the settings."
+
+If the API call fails, the system must show: "Connection error. Please try again."

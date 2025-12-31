@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eduly Panel</title>
+  <link rel="stylesheet" href="sidepanel.css">
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- WELCOME VIEW: Initial Instructions -->
+  <div id="welcome-view" class="view-container">
+    <div class="welcome-content">
+      <img src="icons/1.png" alt="Eduly Logo" class="welcome-logo">
+      <h1>Welcome to Eduly AI</h1>
+      <p class="subtitle">Your personal exam-focused tutor.</p>
+
+      <div class="instructions">
+        <div class="step">
+          <span class="step-num">1</span>
+          <span>Open any <b>Website</b> or <b>PDF</b></span>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <span><b>Select</b> (or Copy) the text</span>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <span>Click <b>"Summarize Selection"</b></span>
+        </div>
+      </div>
+
+      <button id="get-started-btn" class="primary-btn pulse-anim">Get Started</button>
+
+      <p class="small-note" style="margin-top: 2rem; opacity: 0.6;">
+        <b>Note for Local PDFs:</b><br>
+        Enable "Allow access to file URLs" in extension settings.
+      </p>
+    </div>
+  </div>
+
+  <!-- MAIN VIEW: The Interaction Area -->
+  <div id="main-view" class="view-container hidden">
+    <header class="main-header">
+      <div class="brand-container">
+        <img src="icons/1.png" alt="Icon" class="brand-icon-img">
+        <span class="brand">Eduly AI</span>
+      </div>
+      <!-- Settings button removed as there are no settings for free tier currently -->
+    </header>
+
+    <div class="actions">
+      <!-- Summarize Card Style -->
+      <button id="simplify-btn" class="action-card primary-action">
+        <div class="action-content">
+          <span class="icon">📝</span>
+          <div class="action-text">
+            <span class="action-title">Summarize Selection</span>
+            <span class="action-desc">Simplify highlighted text</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- Explain Page button removed as requested -->
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loader" class="hidden">
+      <div class="spinner"></div>
+      <p>Analyzing...</p>
+    </div>
+
+    <!-- Output Container -->
+    <div id="output" class="output-container">
+      <!-- Results will appear here -->
+      <div class="empty-state">
+        Select text and click "Summarize Selection" to get started.
+      </div>
+    </div>
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+
+</html>
