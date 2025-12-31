@@ -52,7 +52,13 @@ if (getStartedBtn) {
 }
 
 simplifyBtn.addEventListener('click', async () => {
+    resetOutputState();
+
     try {
+        //clear old error first
+        const existingError = outputContainer.querySelector('.error-card');
+        if (existingError) existingError.remove();
+
         setLoading(true);
         const text = await getSelectedText();
         const response = await callApiFreeLLM(text);
@@ -72,6 +78,9 @@ function showMainView() {
 
 function setLoading(isLoading) {
     if (isLoading) {
+        const existingError = outputContainer.querySelector('.error-card');
+        if (existingError) existingError.remove();
+
         loader.classList.remove('hidden');
         outputContainer.classList.add('hidden');
     } else {
@@ -225,6 +234,9 @@ async function callApiFreeLLM(userText) {
 }
 
 function renderResult(markdown) {
+    const existingError = outputContainer.querySelector('.error-card');
+    if (existingError) existingError.remove();
+
     const lines = markdown.split('\n');
     let html = '';
     let listStack = [];
@@ -323,6 +335,9 @@ function renderResult(markdown) {
 function handleError(error) {
     console.error(error);
 
+     // 🔥 force remove all previous errors
+    document.querySelectorAll('.error-card').forEach(e => e.remove());
+
     const errorHtml = `
         <div class="result-card" style="border-top: 2px solid #ff4444; padding-top: 1rem;">
             <h3 style="color: #ff4444; margin-top: 0;">⚠️ Error</h3>
@@ -340,4 +355,12 @@ function handleError(error) {
     const emptyState = outputContainer.querySelector('.empty-state');
     if (emptyState) emptyState.remove();
     outputContainer.insertBefore(errorDiv, outputContainer.firstChild);
+}
+
+function resetOutputState() {
+    // Remove old errors
+    document.querySelectorAll('.error-card').forEach(e => e.remove());
+
+    // Remove old results
+    document.querySelectorAll('.result-card').forEach(r => r.remove());
 }
