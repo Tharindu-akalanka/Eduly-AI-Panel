@@ -166,71 +166,78 @@ async function getSelectedText() {
     return text;
 }
 
-async function callApiFreeLLM(userText) {
-    // 1. Initial Truncation to safe limit (approx 1000 tokens)
-    if (userText.length > 4500) {
-        console.warn(`Text too long (${userText.length} chars). Truncating to 4500.`);
-        userText = userText.substring(0, 4500) + "... [truncated]";
+// 1. Initial Truncation to safe limit (approx 1800 characters to avoid 500 errors)
+// Previous limit of 4500 was causing 500 errors. API seems flaky above 3000 total chars.
+// 1800 user chars + 1200 prompt chars = 3000 total.
+if (userText.length > 1800) {
+    console.warn(`Text too long (${userText.length} chars). Truncating to 1800.`);
+    userText = userText.substring(0, 1800) + "... [truncated]";
+}
+
+const constructPayload = (useSystemPrompt, text) => {
+    if (useSystemPrompt) {
+        return SYSTEM_PROMPT + "\n\nUser Input:\n" + text;
+    } else {
+        return "Explain this simply:\n\n" + text;
+    }
+};
+
+const sendRequest = async (payload) => {
+    const response = await fetch('https://apifreellm.com/api/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            message: payload
+        })
+    });
+    return response;
+};
+
+try {
+    // Try with full system prompt first
+    let response = await sendRequest(constructPayload(true, userText));
+
+    // If 500, retry with simplified prompt AND shorter text (aggressive fallback)
+    if (response.status === 500) {
+        console.warn("Got 500 Error. Retrying with simplified prompt and shorter text...");
+        // Reduce to 1000 chars for the retry to be very safe
+        const shorterText = userText.length > 1000 ? userText.substring(0, 1000) + "... [truncated]" : userText;
+        response = await sendRequest(constructPayload(false, shorterText));
     }
 
-    const constructPayload = (useSystemPrompt, text) => {
-        if (useSystemPrompt) {
-            return SYSTEM_PROMPT + "\n\nUser Input:\n" + text;
-        } else {
-            return "Explain this simply:\n\n" + text;
+    if (!response.ok) {
+        console.error("API Response Status:", response.status, response.statusText);
+
+        let errorMsg = `Status ${response.status}`;
+        try {
+            const errorData = await response.json();
+            if (errorData.error) errorMsg += `: ${errorData.error}`;
+            else if (errorData.message) errorMsg += `: ${errorData.message}`;
+        } catch (e) {
+            const textBody = await response.text();
+            if (textBody) errorMsg += `: ${textBody.substring(0, 50)}...`;
         }
-    };
 
-    const sendRequest = async (payload) => {
-        const response = await fetch('https://apifreellm.com/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: payload
-            })
-        });
-        return response;
-    };
+        if (response.status === 429) {
+            throw new Error("Rate limit reached. Please wait 5 seconds.");
+        }
 
-    try {
-        // Try with full system prompt first
-        let response = await sendRequest(constructPayload(true, userText));
-
-        // If 500, retry with simplified prompt AND shorter text (aggressive fallback)
+        // Helpful message for persistent 500s
         if (response.status === 500) {
-            console.warn("Got 500 Error. Retrying with simplified prompt and shorter text...");
-            const shorterText = userText.length > 2000 ? userText.substring(0, 2000) + "... [truncated]" : userText;
-            response = await sendRequest(constructPayload(false, shorterText));
+            throw new Error("Server Error (500). The text might be too complex. Try selecting a shorter section.");
         }
 
-        if (!response.ok) {
-            console.error("API Response Status:", response.status, response.statusText);
-
-            let errorMsg = `Status ${response.status}`;
-            try {
-                const errorData = await response.json();
-                if (errorData.error) errorMsg += `: ${errorData.error}`;
-                else if (errorData.message) errorMsg += `: ${errorData.message}`;
-            } catch (e) {
-                const textBody = await response.text();
-                if (textBody) errorMsg += `: ${textBody.substring(0, 50)}...`;
-            }
-
-            if (response.status === 429) {
-                throw new Error("Rate limit reached. Please wait 5 seconds.");
-            }
-
-            throw new Error(`API Request failed (${errorMsg})`);
-        }
-
-        const data = await response.json();
-        return data.response || data.message || "No response text found.";
-    } catch (err) {
-        console.error("Fetch error:", err);
-        throw err;
+        throw new Error(`API Request failed (${errorMsg})`);
     }
+
+    const data = await response.json();
+    return data.response || data.message || "No response text found.";
+} catch (err) {
+    console.error("Fetch error:", err);
+    throw err;
+}
 }
 
 function renderResult(markdown) {
@@ -335,7 +342,7 @@ function renderResult(markdown) {
 function handleError(error) {
     console.error(error);
 
-     // 🔥 force remove all previous errors
+    // 🔥 force remove all previous errors
     document.querySelectorAll('.error-card').forEach(e => e.remove());
 
     const errorHtml = `
